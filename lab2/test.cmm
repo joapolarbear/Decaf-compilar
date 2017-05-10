@@ -1,0 +1,14 @@
+class main 
+{
+	int b;
+	void a(int c)
+	{
+		b[1] = 1;
+		return b;
+		int[] b;
+	}
+}
+class A
+{
+	int b;
+}

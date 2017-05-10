@@ -1,0 +1,82 @@
+.data
+_prompt: .asciiz "Enter an integer:"
+_ret: .asciiz "\n"
+.globl main
+.text
+
+read:
+subu $sp, $sp, 8
+sw $ra, 4($sp)
+sw $fp, 0($sp)
+addi $fp, $sp, 8
+li $v0, 4
+la $a0, _prompt
+syscall
+li $v0, 5
+syscall
+subu $sp, $fp, 8
+lw $ra, 4($sp)
+lw $fp, 0($sp)
+jr $ra
+
+write:
+subu $sp, $sp, 8
+sw $ra, 4($sp)
+sw $fp, 0($sp)
+addi $fp, $sp, 8
+li $v0, 1
+syscall
+li $v0, 4
+la $a0, _ret
+syscall
+subu $sp, $fp, 8
+lw $ra, 4($sp)
+lw $fp, 0($sp)
+move $v0, $0
+jr $ra
+
+_main_New:
+subu $sp, $sp, 8
+sw $ra, 4($sp)
+sw $fp, 0($sp)
+addi $fp, $sp, 8
+subu $t0, $fp, 28
+move $t2, $t1
+sw $t2, 0($t0)
+subu $sp, $fp, 8
+lw $ra, 4($sp)
+lw $fp, 0($sp)
+move $v0, $t0
+jr $ra
+
+main:
+subu $sp, $sp, 8
+sw $ra, 4($sp)
+sw $fp, 0($sp)
+addi $fp, $sp, 8
+move $t0, $0
+li $t2, 1
+move $t1, $t2
+move $t3, $0
+subu $sp, $fp, 20
+jal read
+move $t4, $v0
+move $t5, $t4
+label1:
+blt $t3, $t5, label2
+j label0
+label2:
+add $t6, $t0, $t1
+subu $sp, $fp, 32
+move $a0, $t1
+jal write
+move $t0, $t1
+move $t1, $t6
+addi $t3, $t3, 1
+j label1
+label0:
+subu $sp, $fp, 8
+lw $ra, 4($sp)
+lw $fp, 0($sp)
+move $v0, $0
+jr $ra

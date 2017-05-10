@@ -1,0 +1,3192 @@
+Terminals unused in grammar
+
+   SPACE
+   EOL
+
+
+State 9 conflicts: 1 reduce/reduce
+State 25 conflicts: 1 reduce/reduce
+
+
+Grammar
+
+    0 $accept: Program $end
+
+    1 Program: ClassDef ProgramList
+
+    2 ProgramList: ClassDef
+    3            | %empty
+
+    4 VariableDef: Variable SEMI
+
+    5 Variable: Type ID
+
+    6 Type: INT
+    7     | BOOL
+    8     | FLOAT
+    9     | STRING
+   10     | VOID
+   11     | CLASS ID
+   12     | Type LB RB
+
+   13 Formals: FormalsList
+   14        | %empty
+
+   15 FormalsList: Variable COMMA FormalsList
+   16            | Variable
+
+   17 FunctionDef: Type ID LP Formals RP StmtBlock
+   18            | STATIC Type ID LP Formals RP StmtBlock
+
+   19 ClassDef: CLASS ID LC Field RC
+   20         | CLASS ID EXTENDS ID LC Field RC
+
+   21 Field: VariableDefList
+   22      | FunctionDefList
+
+   23 VariableDefList: VariableDef VariableDefList
+   24                | %empty
+
+   25 FunctionDefList: FunctionDef FunctionDefList
+   26                | %empty
+
+   27 StmtBlock: LC StmtList RC
+
+   28 StmtList: %empty
+   29         | Stmt StmtList
+
+   30 Stmt: Variable SEMI
+   31     | SimpleStmt SEMI
+   32     | IfStmt
+   33     | WhileStmt
+   34     | ForStmt
+   35     | BreakStmt SEMI
+   36     | ReturnStmt SEMI
+   37     | PrintStmt SEMI
+   38     | StmtBlock
+
+   39 SimpleStmt: LValue ASSIGNOP Expr
+   40           | Call
+   41           | %empty
+
+   42 LValue: ID
+   43       | Expr DOT ID
+   44       | Expr LB Expr RB
+
+   45 Call: ID LP Actuals RP
+   46     | Expr DOT ID LP Actuals RP
+
+   47 Actuals: ActualsList
+   48        | %empty
+
+   49 ActualsList: Expr COMMA ActualsList
+   50            | Expr
+
+   51 ForStmt: FOR LP SimpleStmt SEMI BoolExpr SEMI SimpleStmt RP Stmt
+
+   52 WhileStmt: WHILE LP BoolExpr RP Stmt
+
+   53 IfStmt: IF LP BoolExpr RP Stmt
+   54       | IF LP BoolExpr RP Stmt ELSE Stmt
+
+   55 ReturnStmt: RETURN
+   56           | RETURN Expr
+
+   57 BreakStmt: BREAK
+
+   58 PrintStmt: PRINT LP ActualsList RP
+
+   59 BoolExpr: Expr
+
+   60 Expr: Constant
+   61     | LValue
+   62     | THIS
+   63     | Call
+   64     | LP Expr RP
+   65     | Expr PLUS Expr
+   66     | Expr MINUS Expr
+   67     | Expr STAR Expr
+   68     | Expr DIV Expr
+   69     | Expr MOD Expr
+   70     | MINUS Expr
+   71     | Expr LESS Expr
+   72     | Expr MORE Expr
+   73     | Expr LESSEQUAL Expr
+   74     | Expr MOREEQUAL Expr
+   75     | Expr EQUAL Expr
+   76     | Expr NOTEQUAL Expr
+   77     | Expr AND Expr
+   78     | Expr OR Expr
+   79     | NOT Expr
+   80     | READINTEGER LP RP
+   81     | READLINE LP RP
+   82     | NEW ID LP RP
+   83     | NEW Type LB Expr RB
+   84     | INSTANCEOF LP Expr COMMA ID RP
+   85     | LP CLASS ID RP Expr
+
+   86 Constant: INTC
+   87         | BOOLC
+   88         | FLOATC
+   89         | STRINGC
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+INT (258) 6
+FLOAT (259) 8
+BOOL (260) 7
+STRING (261) 9
+VOID (262) 10
+CLASS (263) 11 19 20 85
+STATIC (264) 18
+EXTENDS (265) 20
+FOR (266) 51
+BREAK (267) 57
+PRINT (268) 58
+THIS (269) 62
+NEW (270) 82 83
+RETURN (271) 55 56
+IF (272) 53 54
+ELSE (273) 54
+WHILE (274) 52
+READINTEGER (275) 80
+READLINE (276) 81
+INSTANCEOF (277) 84
+ID (278) 5 11 17 18 19 20 42 43 45 46 82 84 85
+INTC (279) 86
+FLOATC (280) 88
+BOOLC (281) 87
+STRINGC (282) 89
+ASSIGNOP (283) 39
+LESS (284) 71
+MORE (285) 72
+LESSEQUAL (286) 73
+MOREEQUAL (287) 74
+EQUAL (288) 75
+NOTEQUAL (289) 76
+PLUS (290) 65
+MINUS (291) 66 70
+STAR (292) 67
+DIV (293) 68
+AND (294) 77
+OR (295) 78
+DOT (296) 43 46
+MOD (297) 69
+NOT (298) 79
+LP (299) 17 18 45 46 51 52 53 54 58 64 80 81 82 84 85
+RP (300) 17 18 45 46 51 52 53 54 58 64 80 81 82 84 85
+LB (301) 12 44 83
+RB (302) 12 44 83
+LC (303) 19 20 27
+RC (304) 19 20 27
+SEMI (305) 4 30 31 35 36 37 51
+COMMA (306) 15 49 84
+SPACE (307)
+EOL (308)
+LOWER_THAN_ELSE (309)
+
+
+Nonterminals, with rules where they appear
+
+$accept (55)
+    on left: 0
+Program (56)
+    on left: 1, on right: 0
+ProgramList (57)
+    on left: 2 3, on right: 1
+VariableDef (58)
+    on left: 4, on right: 23
+Variable (59)
+    on left: 5, on right: 4 15 16 30
+Type (60)
+    on left: 6 7 8 9 10 11 12, on right: 5 12 17 18 83
+Formals (61)
+    on left: 13 14, on right: 17 18
+FormalsList (62)
+    on left: 15 16, on right: 13 15
+FunctionDef (63)
+    on left: 17 18, on right: 25
+ClassDef (64)
+    on left: 19 20, on right: 1 2
+Field (65)
+    on left: 21 22, on right: 19 20
+VariableDefList (66)
+    on left: 23 24, on right: 21 23
+FunctionDefList (67)
+    on left: 25 26, on right: 22 25
+StmtBlock (68)
+    on left: 27, on right: 17 18 38
+StmtList (69)
+    on left: 28 29, on right: 27 29
+Stmt (70)
+    on left: 30 31 32 33 34 35 36 37 38, on right: 29 51 52 53 54
+SimpleStmt (71)
+    on left: 39 40 41, on right: 31 51
+LValue (72)
+    on left: 42 43 44, on right: 39 61
+Call (73)
+    on left: 45 46, on right: 40 63
+Actuals (74)
+    on left: 47 48, on right: 45 46
+ActualsList (75)
+    on left: 49 50, on right: 47 49 58
+ForStmt (76)
+    on left: 51, on right: 34
+WhileStmt (77)
+    on left: 52, on right: 33
+IfStmt (78)
+    on left: 53 54, on right: 32
+ReturnStmt (79)
+    on left: 55 56, on right: 36
+BreakStmt (80)
+    on left: 57, on right: 35
+PrintStmt (81)
+    on left: 58, on right: 37
+BoolExpr (82)
+    on left: 59, on right: 51 52 53 54
+Expr (83)
+    on left: 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77
+    78 79 80 81 82 83 84 85, on right: 39 43 44 46 49 50 56 59 64 65
+    66 67 68 69 70 71 72 73 74 75 76 77 78 79 83 84 85
+Constant (84)
+    on left: 86 87 88 89, on right: 60
+
+
+State 0
+
+    0 $accept: . Program $end
+
+    CLASS  shift, and go to state 1
+
+    Program   go to state 2
+    ClassDef  go to state 3
+
+
+State 1
+
+   19 ClassDef: CLASS . ID LC Field RC
+   20         | CLASS . ID EXTENDS ID LC Field RC
+
+    ID  shift, and go to state 4
+
+
+State 2
+
+    0 $accept: Program . $end
+
+    $end  shift, and go to state 5
+
+
+State 3
+
+    1 Program: ClassDef . ProgramList
+
+    CLASS  shift, and go to state 1
+
+    $default  reduce using rule 3 (ProgramList)
+
+    ProgramList  go to state 6
+    ClassDef     go to state 7
+
+
+State 4
+
+   19 ClassDef: CLASS ID . LC Field RC
+   20         | CLASS ID . EXTENDS ID LC Field RC
+
+    EXTENDS  shift, and go to state 8
+    LC       shift, and go to state 9
+
+
+State 5
+
+    0 $accept: Program $end .
+
+    $default  accept
+
+
+State 6
+
+    1 Program: ClassDef ProgramList .
+
+    $default  reduce using rule 1 (Program)
+
+
+State 7
+
+    2 ProgramList: ClassDef .
+
+    $default  reduce using rule 2 (ProgramList)
+
+
+State 8
+
+   20 ClassDef: CLASS ID EXTENDS . ID LC Field RC
+
+    ID  shift, and go to state 10
+
+
+State 9
+
+   19 ClassDef: CLASS ID LC . Field RC
+
+    INT     shift, and go to state 11
+    FLOAT   shift, and go to state 12
+    BOOL    shift, and go to state 13
+    STRING  shift, and go to state 14
+    VOID    shift, and go to state 15
+    CLASS   shift, and go to state 16
+    STATIC  shift, and go to state 17
+
+    RC        reduce using rule 24 (VariableDefList)
+    RC        [reduce using rule 26 (FunctionDefList)]
+    $default  reduce using rule 24 (VariableDefList)
+
+    VariableDef      go to state 18
+    Variable         go to state 19
+    Type             go to state 20
+    FunctionDef      go to state 21
+    Field            go to state 22
+    VariableDefList  go to state 23
+    FunctionDefList  go to state 24
+
+
+State 10
+
+   20 ClassDef: CLASS ID EXTENDS ID . LC Field RC
+
+    LC  shift, and go to state 25
+
+
+State 11
+
+    6 Type: INT .
+
+    $default  reduce using rule 6 (Type)
+
+
+State 12
+
+    8 Type: FLOAT .
+
+    $default  reduce using rule 8 (Type)
+
+
+State 13
+
+    7 Type: BOOL .
+
+    $default  reduce using rule 7 (Type)
+
+
+State 14
+
+    9 Type: STRING .
+
+    $default  reduce using rule 9 (Type)
+
+
+State 15
+
+   10 Type: VOID .
+
+    $default  reduce using rule 10 (Type)
+
+
+State 16
+
+   11 Type: CLASS . ID
+
+    ID  shift, and go to state 26
+
+
+State 17
+
+   18 FunctionDef: STATIC . Type ID LP Formals RP StmtBlock
+
+    INT     shift, and go to state 11
+    FLOAT   shift, and go to state 12
+    BOOL    shift, and go to state 13
+    STRING  shift, and go to state 14
+    VOID    shift, and go to state 15
+    CLASS   shift, and go to state 16
+
+    Type  go to state 27
+
+
+State 18
+
+   23 VariableDefList: VariableDef . VariableDefList
+
+    INT     shift, and go to state 11
+    FLOAT   shift, and go to state 12
+    BOOL    shift, and go to state 13
+    STRING  shift, and go to state 14
+    VOID    shift, and go to state 15
+    CLASS   shift, and go to state 16
+
+    $default  reduce using rule 24 (VariableDefList)
+
+    VariableDef      go to state 18
+    Variable         go to state 19
+    Type             go to state 28
+    VariableDefList  go to state 29
+
+
+State 19
+
+    4 VariableDef: Variable . SEMI
+
+    SEMI  shift, and go to state 30
+
+
+State 20
+
+    5 Variable: Type . ID
+   12 Type: Type . LB RB
+   17 FunctionDef: Type . ID LP Formals RP StmtBlock
+
+    ID  shift, and go to state 31
+    LB  shift, and go to state 32
+
+
+State 21
+
+   25 FunctionDefList: FunctionDef . FunctionDefList
+
+    INT     shift, and go to state 11
+    FLOAT   shift, and go to state 12
+    BOOL    shift, and go to state 13
+    STRING  shift, and go to state 14
+    VOID    shift, and go to state 15
+    CLASS   shift, and go to state 16
+    STATIC  shift, and go to state 17
+
+    $default  reduce using rule 26 (FunctionDefList)
+
+    Type             go to state 33
+    FunctionDef      go to state 21
+    FunctionDefList  go to state 34
+
+
+State 22
+
+   19 ClassDef: CLASS ID LC Field . RC
+
+    RC  shift, and go to state 35
+
+
+State 23
+
+   21 Field: VariableDefList .
+
+    $default  reduce using rule 21 (Field)
+
+
+State 24
+
+   22 Field: FunctionDefList .
+
+    $default  reduce using rule 22 (Field)
+
+
+State 25
+
+   20 ClassDef: CLASS ID EXTENDS ID LC . Field RC
+
+    INT     shift, and go to state 11
+    FLOAT   shift, and go to state 12
+    BOOL    shift, and go to state 13
+    STRING  shift, and go to state 14
+    VOID    shift, and go to state 15
+    CLASS   shift, and go to state 16
+    STATIC  shift, and go to state 17
+
+    RC        reduce using rule 24 (VariableDefList)
+    RC        [reduce using rule 26 (FunctionDefList)]
+    $default  reduce using rule 24 (VariableDefList)
+
+    VariableDef      go to state 18
+    Variable         go to state 19
+    Type             go to state 20
+    FunctionDef      go to state 21
+    Field            go to state 36
+    VariableDefList  go to state 23
+    FunctionDefList  go to state 24
+
+
+State 26
+
+   11 Type: CLASS ID .
+
+    $default  reduce using rule 11 (Type)
+
+
+State 27
+
+   12 Type: Type . LB RB
+   18 FunctionDef: STATIC Type . ID LP Formals RP StmtBlock
+
+    ID  shift, and go to state 37
+    LB  shift, and go to state 32
+
+
+State 28
+
+    5 Variable: Type . ID
+   12 Type: Type . LB RB
+
+    ID  shift, and go to state 38
+    LB  shift, and go to state 32
+
+
+State 29
+
+   23 VariableDefList: VariableDef VariableDefList .
+
+    $default  reduce using rule 23 (VariableDefList)
+
+
+State 30
+
+    4 VariableDef: Variable SEMI .
+
+    $default  reduce using rule 4 (VariableDef)
+
+
+State 31
+
+    5 Variable: Type ID .
+   17 FunctionDef: Type ID . LP Formals RP StmtBlock
+
+    LP  shift, and go to state 39
+
+    $default  reduce using rule 5 (Variable)
+
+
+State 32
+
+   12 Type: Type LB . RB
+
+    RB  shift, and go to state 40
+
+
+State 33
+
+   12 Type: Type . LB RB
+   17 FunctionDef: Type . ID LP Formals RP StmtBlock
+
+    ID  shift, and go to state 41
+    LB  shift, and go to state 32
+
+
+State 34
+
+   25 FunctionDefList: FunctionDef FunctionDefList .
+
+    $default  reduce using rule 25 (FunctionDefList)
+
+
+State 35
+
+   19 ClassDef: CLASS ID LC Field RC .
+
+    $default  reduce using rule 19 (ClassDef)
+
+
+State 36
+
+   20 ClassDef: CLASS ID EXTENDS ID LC Field . RC
+
+    RC  shift, and go to state 42
+
+
+State 37
+
+   18 FunctionDef: STATIC Type ID . LP Formals RP StmtBlock
+
+    LP  shift, and go to state 43
+
+
+State 38
+
+    5 Variable: Type ID .
+
+    $default  reduce using rule 5 (Variable)
+
+
+State 39
+
+   17 FunctionDef: Type ID LP . Formals RP StmtBlock
+
+    INT     shift, and go to state 11
+    FLOAT   shift, and go to state 12
+    BOOL    shift, and go to state 13
+    STRING  shift, and go to state 14
+    VOID    shift, and go to state 15
+    CLASS   shift, and go to state 16
+
+    $default  reduce using rule 14 (Formals)
+
+    Variable     go to state 44
+    Type         go to state 28
+    Formals      go to state 45
+    FormalsList  go to state 46
+
+
+State 40
+
+   12 Type: Type LB RB .
+
+    $default  reduce using rule 12 (Type)
+
+
+State 41
+
+   17 FunctionDef: Type ID . LP Formals RP StmtBlock
+
+    LP  shift, and go to state 39
+
+
+State 42
+
+   20 ClassDef: CLASS ID EXTENDS ID LC Field RC .
+
+    $default  reduce using rule 20 (ClassDef)
+
+
+State 43
+
+   18 FunctionDef: STATIC Type ID LP . Formals RP StmtBlock
+
+    INT     shift, and go to state 11
+    FLOAT   shift, and go to state 12
+    BOOL    shift, and go to state 13
+    STRING  shift, and go to state 14
+    VOID    shift, and go to state 15
+    CLASS   shift, and go to state 16
+
+    $default  reduce using rule 14 (Formals)
+
+    Variable     go to state 44
+    Type         go to state 28
+    Formals      go to state 47
+    FormalsList  go to state 46
+
+
+State 44
+
+   15 FormalsList: Variable . COMMA FormalsList
+   16            | Variable .
+
+    COMMA  shift, and go to state 48
+
+    $default  reduce using rule 16 (FormalsList)
+
+
+State 45
+
+   17 FunctionDef: Type ID LP Formals . RP StmtBlock
+
+    RP  shift, and go to state 49
+
+
+State 46
+
+   13 Formals: FormalsList .
+
+    $default  reduce using rule 13 (Formals)
+
+
+State 47
+
+   18 FunctionDef: STATIC Type ID LP Formals . RP StmtBlock
+
+    RP  shift, and go to state 50
+
+
+State 48
+
+   15 FormalsList: Variable COMMA . FormalsList
+
+    INT     shift, and go to state 11
+    FLOAT   shift, and go to state 12
+    BOOL    shift, and go to state 13
+    STRING  shift, and go to state 14
+    VOID    shift, and go to state 15
+    CLASS   shift, and go to state 16
+
+    Variable     go to state 44
+    Type         go to state 28
+    FormalsList  go to state 51
+
+
+State 49
+
+   17 FunctionDef: Type ID LP Formals RP . StmtBlock
+
+    LC  shift, and go to state 52
+
+    StmtBlock  go to state 53
+
+
+State 50
+
+   18 FunctionDef: STATIC Type ID LP Formals RP . StmtBlock
+
+    LC  shift, and go to state 52
+
+    StmtBlock  go to state 54
+
+
+State 51
+
+   15 FormalsList: Variable COMMA FormalsList .
+
+    $default  reduce using rule 15 (FormalsList)
+
+
+State 52
+
+   27 StmtBlock: LC . StmtList RC
+
+    INT          shift, and go to state 11
+    FLOAT        shift, and go to state 12
+    BOOL         shift, and go to state 13
+    STRING       shift, and go to state 14
+    VOID         shift, and go to state 15
+    CLASS        shift, and go to state 16
+    FOR          shift, and go to state 55
+    BREAK        shift, and go to state 56
+    PRINT        shift, and go to state 57
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    RETURN       shift, and go to state 60
+    IF           shift, and go to state 61
+    WHILE        shift, and go to state 62
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+    LC           shift, and go to state 52
+
+    SEMI      reduce using rule 41 (SimpleStmt)
+    $default  reduce using rule 28 (StmtList)
+
+    Variable    go to state 74
+    Type        go to state 28
+    StmtBlock   go to state 75
+    StmtList    go to state 76
+    Stmt        go to state 77
+    SimpleStmt  go to state 78
+    LValue      go to state 79
+    Call        go to state 80
+    ForStmt     go to state 81
+    WhileStmt   go to state 82
+    IfStmt      go to state 83
+    ReturnStmt  go to state 84
+    BreakStmt   go to state 85
+    PrintStmt   go to state 86
+    Expr        go to state 87
+    Constant    go to state 88
+
+
+State 53
+
+   17 FunctionDef: Type ID LP Formals RP StmtBlock .
+
+    $default  reduce using rule 17 (FunctionDef)
+
+
+State 54
+
+   18 FunctionDef: STATIC Type ID LP Formals RP StmtBlock .
+
+    $default  reduce using rule 18 (FunctionDef)
+
+
+State 55
+
+   51 ForStmt: FOR . LP SimpleStmt SEMI BoolExpr SEMI SimpleStmt RP Stmt
+
+    LP  shift, and go to state 89
+
+
+State 56
+
+   57 BreakStmt: BREAK .
+
+    $default  reduce using rule 57 (BreakStmt)
+
+
+State 57
+
+   58 PrintStmt: PRINT . LP ActualsList RP
+
+    LP  shift, and go to state 90
+
+
+State 58
+
+   62 Expr: THIS .
+
+    $default  reduce using rule 62 (Expr)
+
+
+State 59
+
+   82 Expr: NEW . ID LP RP
+   83     | NEW . Type LB Expr RB
+
+    INT     shift, and go to state 11
+    FLOAT   shift, and go to state 12
+    BOOL    shift, and go to state 13
+    STRING  shift, and go to state 14
+    VOID    shift, and go to state 15
+    CLASS   shift, and go to state 16
+    ID      shift, and go to state 91
+
+    Type  go to state 92
+
+
+State 60
+
+   55 ReturnStmt: RETURN .
+   56           | RETURN . Expr
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    $default  reduce using rule 55 (ReturnStmt)
+
+    LValue    go to state 93
+    Call      go to state 94
+    Expr      go to state 95
+    Constant  go to state 88
+
+
+State 61
+
+   53 IfStmt: IF . LP BoolExpr RP Stmt
+   54       | IF . LP BoolExpr RP Stmt ELSE Stmt
+
+    LP  shift, and go to state 96
+
+
+State 62
+
+   52 WhileStmt: WHILE . LP BoolExpr RP Stmt
+
+    LP  shift, and go to state 97
+
+
+State 63
+
+   80 Expr: READINTEGER . LP RP
+
+    LP  shift, and go to state 98
+
+
+State 64
+
+   81 Expr: READLINE . LP RP
+
+    LP  shift, and go to state 99
+
+
+State 65
+
+   84 Expr: INSTANCEOF . LP Expr COMMA ID RP
+
+    LP  shift, and go to state 100
+
+
+State 66
+
+   42 LValue: ID .
+   45 Call: ID . LP Actuals RP
+
+    LP  shift, and go to state 101
+
+    $default  reduce using rule 42 (LValue)
+
+
+State 67
+
+   86 Constant: INTC .
+
+    $default  reduce using rule 86 (Constant)
+
+
+State 68
+
+   88 Constant: FLOATC .
+
+    $default  reduce using rule 88 (Constant)
+
+
+State 69
+
+   87 Constant: BOOLC .
+
+    $default  reduce using rule 87 (Constant)
+
+
+State 70
+
+   89 Constant: STRINGC .
+
+    $default  reduce using rule 89 (Constant)
+
+
+State 71
+
+   70 Expr: MINUS . Expr
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    LValue    go to state 93
+    Call      go to state 94
+    Expr      go to state 102
+    Constant  go to state 88
+
+
+State 72
+
+   79 Expr: NOT . Expr
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    LValue    go to state 93
+    Call      go to state 94
+    Expr      go to state 103
+    Constant  go to state 88
+
+
+State 73
+
+   64 Expr: LP . Expr RP
+   85     | LP . CLASS ID RP Expr
+
+    CLASS        shift, and go to state 104
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    LValue    go to state 93
+    Call      go to state 94
+    Expr      go to state 105
+    Constant  go to state 88
+
+
+State 74
+
+   30 Stmt: Variable . SEMI
+
+    SEMI  shift, and go to state 106
+
+
+State 75
+
+   38 Stmt: StmtBlock .
+
+    $default  reduce using rule 38 (Stmt)
+
+
+State 76
+
+   27 StmtBlock: LC StmtList . RC
+
+    RC  shift, and go to state 107
+
+
+State 77
+
+   29 StmtList: Stmt . StmtList
+
+    INT          shift, and go to state 11
+    FLOAT        shift, and go to state 12
+    BOOL         shift, and go to state 13
+    STRING       shift, and go to state 14
+    VOID         shift, and go to state 15
+    CLASS        shift, and go to state 16
+    FOR          shift, and go to state 55
+    BREAK        shift, and go to state 56
+    PRINT        shift, and go to state 57
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    RETURN       shift, and go to state 60
+    IF           shift, and go to state 61
+    WHILE        shift, and go to state 62
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+    LC           shift, and go to state 52
+
+    SEMI      reduce using rule 41 (SimpleStmt)
+    $default  reduce using rule 28 (StmtList)
+
+    Variable    go to state 74
+    Type        go to state 28
+    StmtBlock   go to state 75
+    StmtList    go to state 108
+    Stmt        go to state 77
+    SimpleStmt  go to state 78
+    LValue      go to state 79
+    Call        go to state 80
+    ForStmt     go to state 81
+    WhileStmt   go to state 82
+    IfStmt      go to state 83
+    ReturnStmt  go to state 84
+    BreakStmt   go to state 85
+    PrintStmt   go to state 86
+    Expr        go to state 87
+    Constant    go to state 88
+
+
+State 78
+
+   31 Stmt: SimpleStmt . SEMI
+
+    SEMI  shift, and go to state 109
+
+
+State 79
+
+   39 SimpleStmt: LValue . ASSIGNOP Expr
+   61 Expr: LValue .
+
+    ASSIGNOP  shift, and go to state 110
+
+    $default  reduce using rule 61 (Expr)
+
+
+State 80
+
+   40 SimpleStmt: Call .
+   63 Expr: Call .
+
+    RP        reduce using rule 40 (SimpleStmt)
+    SEMI      reduce using rule 40 (SimpleStmt)
+    $default  reduce using rule 63 (Expr)
+
+
+State 81
+
+   34 Stmt: ForStmt .
+
+    $default  reduce using rule 34 (Stmt)
+
+
+State 82
+
+   33 Stmt: WhileStmt .
+
+    $default  reduce using rule 33 (Stmt)
+
+
+State 83
+
+   32 Stmt: IfStmt .
+
+    $default  reduce using rule 32 (Stmt)
+
+
+State 84
+
+   36 Stmt: ReturnStmt . SEMI
+
+    SEMI  shift, and go to state 111
+
+
+State 85
+
+   35 Stmt: BreakStmt . SEMI
+
+    SEMI  shift, and go to state 112
+
+
+State 86
+
+   37 Stmt: PrintStmt . SEMI
+
+    SEMI  shift, and go to state 113
+
+
+State 87
+
+   43 LValue: Expr . DOT ID
+   44       | Expr . LB Expr RB
+   46 Call: Expr . DOT ID LP Actuals RP
+   65 Expr: Expr . PLUS Expr
+   66     | Expr . MINUS Expr
+   67     | Expr . STAR Expr
+   68     | Expr . DIV Expr
+   69     | Expr . MOD Expr
+   71     | Expr . LESS Expr
+   72     | Expr . MORE Expr
+   73     | Expr . LESSEQUAL Expr
+   74     | Expr . MOREEQUAL Expr
+   75     | Expr . EQUAL Expr
+   76     | Expr . NOTEQUAL Expr
+   77     | Expr . AND Expr
+   78     | Expr . OR Expr
+
+    LESS       shift, and go to state 114
+    MORE       shift, and go to state 115
+    LESSEQUAL  shift, and go to state 116
+    MOREEQUAL  shift, and go to state 117
+    EQUAL      shift, and go to state 118
+    NOTEQUAL   shift, and go to state 119
+    PLUS       shift, and go to state 120
+    MINUS      shift, and go to state 121
+    STAR       shift, and go to state 122
+    DIV        shift, and go to state 123
+    AND        shift, and go to state 124
+    OR         shift, and go to state 125
+    DOT        shift, and go to state 126
+    MOD        shift, and go to state 127
+    LB         shift, and go to state 128
+
+
+State 88
+
+   60 Expr: Constant .
+
+    $default  reduce using rule 60 (Expr)
+
+
+State 89
+
+   51 ForStmt: FOR LP . SimpleStmt SEMI BoolExpr SEMI SimpleStmt RP Stmt
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    $default  reduce using rule 41 (SimpleStmt)
+
+    SimpleStmt  go to state 129
+    LValue      go to state 79
+    Call        go to state 80
+    Expr        go to state 87
+    Constant    go to state 88
+
+
+State 90
+
+   58 PrintStmt: PRINT LP . ActualsList RP
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    LValue       go to state 93
+    Call         go to state 94
+    ActualsList  go to state 130
+    Expr         go to state 131
+    Constant     go to state 88
+
+
+State 91
+
+   82 Expr: NEW ID . LP RP
+
+    LP  shift, and go to state 132
+
+
+State 92
+
+   12 Type: Type . LB RB
+   83 Expr: NEW Type . LB Expr RB
+
+    LB  shift, and go to state 133
+
+
+State 93
+
+   61 Expr: LValue .
+
+    $default  reduce using rule 61 (Expr)
+
+
+State 94
+
+   63 Expr: Call .
+
+    $default  reduce using rule 63 (Expr)
+
+
+State 95
+
+   43 LValue: Expr . DOT ID
+   44       | Expr . LB Expr RB
+   46 Call: Expr . DOT ID LP Actuals RP
+   56 ReturnStmt: RETURN Expr .
+   65 Expr: Expr . PLUS Expr
+   66     | Expr . MINUS Expr
+   67     | Expr . STAR Expr
+   68     | Expr . DIV Expr
+   69     | Expr . MOD Expr
+   71     | Expr . LESS Expr
+   72     | Expr . MORE Expr
+   73     | Expr . LESSEQUAL Expr
+   74     | Expr . MOREEQUAL Expr
+   75     | Expr . EQUAL Expr
+   76     | Expr . NOTEQUAL Expr
+   77     | Expr . AND Expr
+   78     | Expr . OR Expr
+
+    LESS       shift, and go to state 114
+    MORE       shift, and go to state 115
+    LESSEQUAL  shift, and go to state 116
+    MOREEQUAL  shift, and go to state 117
+    EQUAL      shift, and go to state 118
+    NOTEQUAL   shift, and go to state 119
+    PLUS       shift, and go to state 120
+    MINUS      shift, and go to state 121
+    STAR       shift, and go to state 122
+    DIV        shift, and go to state 123
+    AND        shift, and go to state 124
+    OR         shift, and go to state 125
+    DOT        shift, and go to state 126
+    MOD        shift, and go to state 127
+    LB         shift, and go to state 128
+
+    $default  reduce using rule 56 (ReturnStmt)
+
+
+State 96
+
+   53 IfStmt: IF LP . BoolExpr RP Stmt
+   54       | IF LP . BoolExpr RP Stmt ELSE Stmt
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    LValue    go to state 93
+    Call      go to state 94
+    BoolExpr  go to state 134
+    Expr      go to state 135
+    Constant  go to state 88
+
+
+State 97
+
+   52 WhileStmt: WHILE LP . BoolExpr RP Stmt
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    LValue    go to state 93
+    Call      go to state 94
+    BoolExpr  go to state 136
+    Expr      go to state 135
+    Constant  go to state 88
+
+
+State 98
+
+   80 Expr: READINTEGER LP . RP
+
+    RP  shift, and go to state 137
+
+
+State 99
+
+   81 Expr: READLINE LP . RP
+
+    RP  shift, and go to state 138
+
+
+State 100
+
+   84 Expr: INSTANCEOF LP . Expr COMMA ID RP
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    LValue    go to state 93
+    Call      go to state 94
+    Expr      go to state 139
+    Constant  go to state 88
+
+
+State 101
+
+   45 Call: ID LP . Actuals RP
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    $default  reduce using rule 48 (Actuals)
+
+    LValue       go to state 93
+    Call         go to state 94
+    Actuals      go to state 140
+    ActualsList  go to state 141
+    Expr         go to state 131
+    Constant     go to state 88
+
+
+State 102
+
+   43 LValue: Expr . DOT ID
+   44       | Expr . LB Expr RB
+   46 Call: Expr . DOT ID LP Actuals RP
+   65 Expr: Expr . PLUS Expr
+   66     | Expr . MINUS Expr
+   67     | Expr . STAR Expr
+   68     | Expr . DIV Expr
+   69     | Expr . MOD Expr
+   70     | MINUS Expr .
+   71     | Expr . LESS Expr
+   72     | Expr . MORE Expr
+   73     | Expr . LESSEQUAL Expr
+   74     | Expr . MOREEQUAL Expr
+   75     | Expr . EQUAL Expr
+   76     | Expr . NOTEQUAL Expr
+   77     | Expr . AND Expr
+   78     | Expr . OR Expr
+
+    STAR  shift, and go to state 122
+    DIV   shift, and go to state 123
+    DOT   shift, and go to state 126
+    MOD   shift, and go to state 127
+    LB    shift, and go to state 128
+
+    $default  reduce using rule 70 (Expr)
+
+
+State 103
+
+   43 LValue: Expr . DOT ID
+   44       | Expr . LB Expr RB
+   46 Call: Expr . DOT ID LP Actuals RP
+   65 Expr: Expr . PLUS Expr
+   66     | Expr . MINUS Expr
+   67     | Expr . STAR Expr
+   68     | Expr . DIV Expr
+   69     | Expr . MOD Expr
+   71     | Expr . LESS Expr
+   72     | Expr . MORE Expr
+   73     | Expr . LESSEQUAL Expr
+   74     | Expr . MOREEQUAL Expr
+   75     | Expr . EQUAL Expr
+   76     | Expr . NOTEQUAL Expr
+   77     | Expr . AND Expr
+   78     | Expr . OR Expr
+   79     | NOT Expr .
+
+    DOT  shift, and go to state 126
+    LB   shift, and go to state 128
+
+    $default  reduce using rule 79 (Expr)
+
+
+State 104
+
+   85 Expr: LP CLASS . ID RP Expr
+
+    ID  shift, and go to state 142
+
+
+State 105
+
+   43 LValue: Expr . DOT ID
+   44       | Expr . LB Expr RB
+   46 Call: Expr . DOT ID LP Actuals RP
+   64 Expr: LP Expr . RP
+   65     | Expr . PLUS Expr
+   66     | Expr . MINUS Expr
+   67     | Expr . STAR Expr
+   68     | Expr . DIV Expr
+   69     | Expr . MOD Expr
+   71     | Expr . LESS Expr
+   72     | Expr . MORE Expr
+   73     | Expr . LESSEQUAL Expr
+   74     | Expr . MOREEQUAL Expr
+   75     | Expr . EQUAL Expr
+   76     | Expr . NOTEQUAL Expr
+   77     | Expr . AND Expr
+   78     | Expr . OR Expr
+
+    LESS       shift, and go to state 114
+    MORE       shift, and go to state 115
+    LESSEQUAL  shift, and go to state 116
+    MOREEQUAL  shift, and go to state 117
+    EQUAL      shift, and go to state 118
+    NOTEQUAL   shift, and go to state 119
+    PLUS       shift, and go to state 120
+    MINUS      shift, and go to state 121
+    STAR       shift, and go to state 122
+    DIV        shift, and go to state 123
+    AND        shift, and go to state 124
+    OR         shift, and go to state 125
+    DOT        shift, and go to state 126
+    MOD        shift, and go to state 127
+    RP         shift, and go to state 143
+    LB         shift, and go to state 128
+
+
+State 106
+
+   30 Stmt: Variable SEMI .
+
+    $default  reduce using rule 30 (Stmt)
+
+
+State 107
+
+   27 StmtBlock: LC StmtList RC .
+
+    $default  reduce using rule 27 (StmtBlock)
+
+
+State 108
+
+   29 StmtList: Stmt StmtList .
+
+    $default  reduce using rule 29 (StmtList)
+
+
+State 109
+
+   31 Stmt: SimpleStmt SEMI .
+
+    $default  reduce using rule 31 (Stmt)
+
+
+State 110
+
+   39 SimpleStmt: LValue ASSIGNOP . Expr
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    LValue    go to state 93
+    Call      go to state 94
+    Expr      go to state 144
+    Constant  go to state 88
+
+
+State 111
+
+   36 Stmt: ReturnStmt SEMI .
+
+    $default  reduce using rule 36 (Stmt)
+
+
+State 112
+
+   35 Stmt: BreakStmt SEMI .
+
+    $default  reduce using rule 35 (Stmt)
+
+
+State 113
+
+   37 Stmt: PrintStmt SEMI .
+
+    $default  reduce using rule 37 (Stmt)
+
+
+State 114
+
+   71 Expr: Expr LESS . Expr
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    LValue    go to state 93
+    Call      go to state 94
+    Expr      go to state 145
+    Constant  go to state 88
+
+
+State 115
+
+   72 Expr: Expr MORE . Expr
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    LValue    go to state 93
+    Call      go to state 94
+    Expr      go to state 146
+    Constant  go to state 88
+
+
+State 116
+
+   73 Expr: Expr LESSEQUAL . Expr
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    LValue    go to state 93
+    Call      go to state 94
+    Expr      go to state 147
+    Constant  go to state 88
+
+
+State 117
+
+   74 Expr: Expr MOREEQUAL . Expr
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    LValue    go to state 93
+    Call      go to state 94
+    Expr      go to state 148
+    Constant  go to state 88
+
+
+State 118
+
+   75 Expr: Expr EQUAL . Expr
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    LValue    go to state 93
+    Call      go to state 94
+    Expr      go to state 149
+    Constant  go to state 88
+
+
+State 119
+
+   76 Expr: Expr NOTEQUAL . Expr
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    LValue    go to state 93
+    Call      go to state 94
+    Expr      go to state 150
+    Constant  go to state 88
+
+
+State 120
+
+   65 Expr: Expr PLUS . Expr
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    LValue    go to state 93
+    Call      go to state 94
+    Expr      go to state 151
+    Constant  go to state 88
+
+
+State 121
+
+   66 Expr: Expr MINUS . Expr
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    LValue    go to state 93
+    Call      go to state 94
+    Expr      go to state 152
+    Constant  go to state 88
+
+
+State 122
+
+   67 Expr: Expr STAR . Expr
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    LValue    go to state 93
+    Call      go to state 94
+    Expr      go to state 153
+    Constant  go to state 88
+
+
+State 123
+
+   68 Expr: Expr DIV . Expr
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    LValue    go to state 93
+    Call      go to state 94
+    Expr      go to state 154
+    Constant  go to state 88
+
+
+State 124
+
+   77 Expr: Expr AND . Expr
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    LValue    go to state 93
+    Call      go to state 94
+    Expr      go to state 155
+    Constant  go to state 88
+
+
+State 125
+
+   78 Expr: Expr OR . Expr
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    LValue    go to state 93
+    Call      go to state 94
+    Expr      go to state 156
+    Constant  go to state 88
+
+
+State 126
+
+   43 LValue: Expr DOT . ID
+   46 Call: Expr DOT . ID LP Actuals RP
+
+    ID  shift, and go to state 157
+
+
+State 127
+
+   69 Expr: Expr MOD . Expr
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    LValue    go to state 93
+    Call      go to state 94
+    Expr      go to state 158
+    Constant  go to state 88
+
+
+State 128
+
+   44 LValue: Expr LB . Expr RB
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    LValue    go to state 93
+    Call      go to state 94
+    Expr      go to state 159
+    Constant  go to state 88
+
+
+State 129
+
+   51 ForStmt: FOR LP SimpleStmt . SEMI BoolExpr SEMI SimpleStmt RP Stmt
+
+    SEMI  shift, and go to state 160
+
+
+State 130
+
+   58 PrintStmt: PRINT LP ActualsList . RP
+
+    RP  shift, and go to state 161
+
+
+State 131
+
+   43 LValue: Expr . DOT ID
+   44       | Expr . LB Expr RB
+   46 Call: Expr . DOT ID LP Actuals RP
+   49 ActualsList: Expr . COMMA ActualsList
+   50            | Expr .
+   65 Expr: Expr . PLUS Expr
+   66     | Expr . MINUS Expr
+   67     | Expr . STAR Expr
+   68     | Expr . DIV Expr
+   69     | Expr . MOD Expr
+   71     | Expr . LESS Expr
+   72     | Expr . MORE Expr
+   73     | Expr . LESSEQUAL Expr
+   74     | Expr . MOREEQUAL Expr
+   75     | Expr . EQUAL Expr
+   76     | Expr . NOTEQUAL Expr
+   77     | Expr . AND Expr
+   78     | Expr . OR Expr
+
+    LESS       shift, and go to state 114
+    MORE       shift, and go to state 115
+    LESSEQUAL  shift, and go to state 116
+    MOREEQUAL  shift, and go to state 117
+    EQUAL      shift, and go to state 118
+    NOTEQUAL   shift, and go to state 119
+    PLUS       shift, and go to state 120
+    MINUS      shift, and go to state 121
+    STAR       shift, and go to state 122
+    DIV        shift, and go to state 123
+    AND        shift, and go to state 124
+    OR         shift, and go to state 125
+    DOT        shift, and go to state 126
+    MOD        shift, and go to state 127
+    LB         shift, and go to state 128
+    COMMA      shift, and go to state 162
+
+    $default  reduce using rule 50 (ActualsList)
+
+
+State 132
+
+   82 Expr: NEW ID LP . RP
+
+    RP  shift, and go to state 163
+
+
+State 133
+
+   12 Type: Type LB . RB
+   83 Expr: NEW Type LB . Expr RB
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+    RB           shift, and go to state 40
+
+    LValue    go to state 93
+    Call      go to state 94
+    Expr      go to state 164
+    Constant  go to state 88
+
+
+State 134
+
+   53 IfStmt: IF LP BoolExpr . RP Stmt
+   54       | IF LP BoolExpr . RP Stmt ELSE Stmt
+
+    RP  shift, and go to state 165
+
+
+State 135
+
+   43 LValue: Expr . DOT ID
+   44       | Expr . LB Expr RB
+   46 Call: Expr . DOT ID LP Actuals RP
+   59 BoolExpr: Expr .
+   65 Expr: Expr . PLUS Expr
+   66     | Expr . MINUS Expr
+   67     | Expr . STAR Expr
+   68     | Expr . DIV Expr
+   69     | Expr . MOD Expr
+   71     | Expr . LESS Expr
+   72     | Expr . MORE Expr
+   73     | Expr . LESSEQUAL Expr
+   74     | Expr . MOREEQUAL Expr
+   75     | Expr . EQUAL Expr
+   76     | Expr . NOTEQUAL Expr
+   77     | Expr . AND Expr
+   78     | Expr . OR Expr
+
+    LESS       shift, and go to state 114
+    MORE       shift, and go to state 115
+    LESSEQUAL  shift, and go to state 116
+    MOREEQUAL  shift, and go to state 117
+    EQUAL      shift, and go to state 118
+    NOTEQUAL   shift, and go to state 119
+    PLUS       shift, and go to state 120
+    MINUS      shift, and go to state 121
+    STAR       shift, and go to state 122
+    DIV        shift, and go to state 123
+    AND        shift, and go to state 124
+    OR         shift, and go to state 125
+    DOT        shift, and go to state 126
+    MOD        shift, and go to state 127
+    LB         shift, and go to state 128
+
+    $default  reduce using rule 59 (BoolExpr)
+
+
+State 136
+
+   52 WhileStmt: WHILE LP BoolExpr . RP Stmt
+
+    RP  shift, and go to state 166
+
+
+State 137
+
+   80 Expr: READINTEGER LP RP .
+
+    $default  reduce using rule 80 (Expr)
+
+
+State 138
+
+   81 Expr: READLINE LP RP .
+
+    $default  reduce using rule 81 (Expr)
+
+
+State 139
+
+   43 LValue: Expr . DOT ID
+   44       | Expr . LB Expr RB
+   46 Call: Expr . DOT ID LP Actuals RP
+   65 Expr: Expr . PLUS Expr
+   66     | Expr . MINUS Expr
+   67     | Expr . STAR Expr
+   68     | Expr . DIV Expr
+   69     | Expr . MOD Expr
+   71     | Expr . LESS Expr
+   72     | Expr . MORE Expr
+   73     | Expr . LESSEQUAL Expr
+   74     | Expr . MOREEQUAL Expr
+   75     | Expr . EQUAL Expr
+   76     | Expr . NOTEQUAL Expr
+   77     | Expr . AND Expr
+   78     | Expr . OR Expr
+   84     | INSTANCEOF LP Expr . COMMA ID RP
+
+    LESS       shift, and go to state 114
+    MORE       shift, and go to state 115
+    LESSEQUAL  shift, and go to state 116
+    MOREEQUAL  shift, and go to state 117
+    EQUAL      shift, and go to state 118
+    NOTEQUAL   shift, and go to state 119
+    PLUS       shift, and go to state 120
+    MINUS      shift, and go to state 121
+    STAR       shift, and go to state 122
+    DIV        shift, and go to state 123
+    AND        shift, and go to state 124
+    OR         shift, and go to state 125
+    DOT        shift, and go to state 126
+    MOD        shift, and go to state 127
+    LB         shift, and go to state 128
+    COMMA      shift, and go to state 167
+
+
+State 140
+
+   45 Call: ID LP Actuals . RP
+
+    RP  shift, and go to state 168
+
+
+State 141
+
+   47 Actuals: ActualsList .
+
+    $default  reduce using rule 47 (Actuals)
+
+
+State 142
+
+   85 Expr: LP CLASS ID . RP Expr
+
+    RP  shift, and go to state 169
+
+
+State 143
+
+   64 Expr: LP Expr RP .
+
+    $default  reduce using rule 64 (Expr)
+
+
+State 144
+
+   39 SimpleStmt: LValue ASSIGNOP Expr .
+   43 LValue: Expr . DOT ID
+   44       | Expr . LB Expr RB
+   46 Call: Expr . DOT ID LP Actuals RP
+   65 Expr: Expr . PLUS Expr
+   66     | Expr . MINUS Expr
+   67     | Expr . STAR Expr
+   68     | Expr . DIV Expr
+   69     | Expr . MOD Expr
+   71     | Expr . LESS Expr
+   72     | Expr . MORE Expr
+   73     | Expr . LESSEQUAL Expr
+   74     | Expr . MOREEQUAL Expr
+   75     | Expr . EQUAL Expr
+   76     | Expr . NOTEQUAL Expr
+   77     | Expr . AND Expr
+   78     | Expr . OR Expr
+
+    LESS       shift, and go to state 114
+    MORE       shift, and go to state 115
+    LESSEQUAL  shift, and go to state 116
+    MOREEQUAL  shift, and go to state 117
+    EQUAL      shift, and go to state 118
+    NOTEQUAL   shift, and go to state 119
+    PLUS       shift, and go to state 120
+    MINUS      shift, and go to state 121
+    STAR       shift, and go to state 122
+    DIV        shift, and go to state 123
+    AND        shift, and go to state 124
+    OR         shift, and go to state 125
+    DOT        shift, and go to state 126
+    MOD        shift, and go to state 127
+    LB         shift, and go to state 128
+
+    $default  reduce using rule 39 (SimpleStmt)
+
+
+State 145
+
+   43 LValue: Expr . DOT ID
+   44       | Expr . LB Expr RB
+   46 Call: Expr . DOT ID LP Actuals RP
+   65 Expr: Expr . PLUS Expr
+   66     | Expr . MINUS Expr
+   67     | Expr . STAR Expr
+   68     | Expr . DIV Expr
+   69     | Expr . MOD Expr
+   71     | Expr . LESS Expr
+   71     | Expr LESS Expr .
+   72     | Expr . MORE Expr
+   73     | Expr . LESSEQUAL Expr
+   74     | Expr . MOREEQUAL Expr
+   75     | Expr . EQUAL Expr
+   76     | Expr . NOTEQUAL Expr
+   77     | Expr . AND Expr
+   78     | Expr . OR Expr
+
+    PLUS   shift, and go to state 120
+    MINUS  shift, and go to state 121
+    STAR   shift, and go to state 122
+    DIV    shift, and go to state 123
+    DOT    shift, and go to state 126
+    MOD    shift, and go to state 127
+    LB     shift, and go to state 128
+
+    $default  reduce using rule 71 (Expr)
+
+
+State 146
+
+   43 LValue: Expr . DOT ID
+   44       | Expr . LB Expr RB
+   46 Call: Expr . DOT ID LP Actuals RP
+   65 Expr: Expr . PLUS Expr
+   66     | Expr . MINUS Expr
+   67     | Expr . STAR Expr
+   68     | Expr . DIV Expr
+   69     | Expr . MOD Expr
+   71     | Expr . LESS Expr
+   72     | Expr . MORE Expr
+   72     | Expr MORE Expr .
+   73     | Expr . LESSEQUAL Expr
+   74     | Expr . MOREEQUAL Expr
+   75     | Expr . EQUAL Expr
+   76     | Expr . NOTEQUAL Expr
+   77     | Expr . AND Expr
+   78     | Expr . OR Expr
+
+    PLUS   shift, and go to state 120
+    MINUS  shift, and go to state 121
+    STAR   shift, and go to state 122
+    DIV    shift, and go to state 123
+    DOT    shift, and go to state 126
+    MOD    shift, and go to state 127
+    LB     shift, and go to state 128
+
+    $default  reduce using rule 72 (Expr)
+
+
+State 147
+
+   43 LValue: Expr . DOT ID
+   44       | Expr . LB Expr RB
+   46 Call: Expr . DOT ID LP Actuals RP
+   65 Expr: Expr . PLUS Expr
+   66     | Expr . MINUS Expr
+   67     | Expr . STAR Expr
+   68     | Expr . DIV Expr
+   69     | Expr . MOD Expr
+   71     | Expr . LESS Expr
+   72     | Expr . MORE Expr
+   73     | Expr . LESSEQUAL Expr
+   73     | Expr LESSEQUAL Expr .
+   74     | Expr . MOREEQUAL Expr
+   75     | Expr . EQUAL Expr
+   76     | Expr . NOTEQUAL Expr
+   77     | Expr . AND Expr
+   78     | Expr . OR Expr
+
+    PLUS   shift, and go to state 120
+    MINUS  shift, and go to state 121
+    STAR   shift, and go to state 122
+    DIV    shift, and go to state 123
+    DOT    shift, and go to state 126
+    MOD    shift, and go to state 127
+    LB     shift, and go to state 128
+
+    $default  reduce using rule 73 (Expr)
+
+
+State 148
+
+   43 LValue: Expr . DOT ID
+   44       | Expr . LB Expr RB
+   46 Call: Expr . DOT ID LP Actuals RP
+   65 Expr: Expr . PLUS Expr
+   66     | Expr . MINUS Expr
+   67     | Expr . STAR Expr
+   68     | Expr . DIV Expr
+   69     | Expr . MOD Expr
+   71     | Expr . LESS Expr
+   72     | Expr . MORE Expr
+   73     | Expr . LESSEQUAL Expr
+   74     | Expr . MOREEQUAL Expr
+   74     | Expr MOREEQUAL Expr .
+   75     | Expr . EQUAL Expr
+   76     | Expr . NOTEQUAL Expr
+   77     | Expr . AND Expr
+   78     | Expr . OR Expr
+
+    PLUS   shift, and go to state 120
+    MINUS  shift, and go to state 121
+    STAR   shift, and go to state 122
+    DIV    shift, and go to state 123
+    DOT    shift, and go to state 126
+    MOD    shift, and go to state 127
+    LB     shift, and go to state 128
+
+    $default  reduce using rule 74 (Expr)
+
+
+State 149
+
+   43 LValue: Expr . DOT ID
+   44       | Expr . LB Expr RB
+   46 Call: Expr . DOT ID LP Actuals RP
+   65 Expr: Expr . PLUS Expr
+   66     | Expr . MINUS Expr
+   67     | Expr . STAR Expr
+   68     | Expr . DIV Expr
+   69     | Expr . MOD Expr
+   71     | Expr . LESS Expr
+   72     | Expr . MORE Expr
+   73     | Expr . LESSEQUAL Expr
+   74     | Expr . MOREEQUAL Expr
+   75     | Expr . EQUAL Expr
+   75     | Expr EQUAL Expr .
+   76     | Expr . NOTEQUAL Expr
+   77     | Expr . AND Expr
+   78     | Expr . OR Expr
+
+    PLUS   shift, and go to state 120
+    MINUS  shift, and go to state 121
+    STAR   shift, and go to state 122
+    DIV    shift, and go to state 123
+    DOT    shift, and go to state 126
+    MOD    shift, and go to state 127
+    LB     shift, and go to state 128
+
+    $default  reduce using rule 75 (Expr)
+
+
+State 150
+
+   43 LValue: Expr . DOT ID
+   44       | Expr . LB Expr RB
+   46 Call: Expr . DOT ID LP Actuals RP
+   65 Expr: Expr . PLUS Expr
+   66     | Expr . MINUS Expr
+   67     | Expr . STAR Expr
+   68     | Expr . DIV Expr
+   69     | Expr . MOD Expr
+   71     | Expr . LESS Expr
+   72     | Expr . MORE Expr
+   73     | Expr . LESSEQUAL Expr
+   74     | Expr . MOREEQUAL Expr
+   75     | Expr . EQUAL Expr
+   76     | Expr . NOTEQUAL Expr
+   76     | Expr NOTEQUAL Expr .
+   77     | Expr . AND Expr
+   78     | Expr . OR Expr
+
+    PLUS   shift, and go to state 120
+    MINUS  shift, and go to state 121
+    STAR   shift, and go to state 122
+    DIV    shift, and go to state 123
+    DOT    shift, and go to state 126
+    MOD    shift, and go to state 127
+    LB     shift, and go to state 128
+
+    $default  reduce using rule 76 (Expr)
+
+
+State 151
+
+   43 LValue: Expr . DOT ID
+   44       | Expr . LB Expr RB
+   46 Call: Expr . DOT ID LP Actuals RP
+   65 Expr: Expr . PLUS Expr
+   65     | Expr PLUS Expr .
+   66     | Expr . MINUS Expr
+   67     | Expr . STAR Expr
+   68     | Expr . DIV Expr
+   69     | Expr . MOD Expr
+   71     | Expr . LESS Expr
+   72     | Expr . MORE Expr
+   73     | Expr . LESSEQUAL Expr
+   74     | Expr . MOREEQUAL Expr
+   75     | Expr . EQUAL Expr
+   76     | Expr . NOTEQUAL Expr
+   77     | Expr . AND Expr
+   78     | Expr . OR Expr
+
+    STAR  shift, and go to state 122
+    DIV   shift, and go to state 123
+    DOT   shift, and go to state 126
+    MOD   shift, and go to state 127
+    LB    shift, and go to state 128
+
+    $default  reduce using rule 65 (Expr)
+
+
+State 152
+
+   43 LValue: Expr . DOT ID
+   44       | Expr . LB Expr RB
+   46 Call: Expr . DOT ID LP Actuals RP
+   65 Expr: Expr . PLUS Expr
+   66     | Expr . MINUS Expr
+   66     | Expr MINUS Expr .
+   67     | Expr . STAR Expr
+   68     | Expr . DIV Expr
+   69     | Expr . MOD Expr
+   71     | Expr . LESS Expr
+   72     | Expr . MORE Expr
+   73     | Expr . LESSEQUAL Expr
+   74     | Expr . MOREEQUAL Expr
+   75     | Expr . EQUAL Expr
+   76     | Expr . NOTEQUAL Expr
+   77     | Expr . AND Expr
+   78     | Expr . OR Expr
+
+    STAR  shift, and go to state 122
+    DIV   shift, and go to state 123
+    DOT   shift, and go to state 126
+    MOD   shift, and go to state 127
+    LB    shift, and go to state 128
+
+    $default  reduce using rule 66 (Expr)
+
+
+State 153
+
+   43 LValue: Expr . DOT ID
+   44       | Expr . LB Expr RB
+   46 Call: Expr . DOT ID LP Actuals RP
+   65 Expr: Expr . PLUS Expr
+   66     | Expr . MINUS Expr
+   67     | Expr . STAR Expr
+   67     | Expr STAR Expr .
+   68     | Expr . DIV Expr
+   69     | Expr . MOD Expr
+   71     | Expr . LESS Expr
+   72     | Expr . MORE Expr
+   73     | Expr . LESSEQUAL Expr
+   74     | Expr . MOREEQUAL Expr
+   75     | Expr . EQUAL Expr
+   76     | Expr . NOTEQUAL Expr
+   77     | Expr . AND Expr
+   78     | Expr . OR Expr
+
+    DOT  shift, and go to state 126
+    LB   shift, and go to state 128
+
+    $default  reduce using rule 67 (Expr)
+
+
+State 154
+
+   43 LValue: Expr . DOT ID
+   44       | Expr . LB Expr RB
+   46 Call: Expr . DOT ID LP Actuals RP
+   65 Expr: Expr . PLUS Expr
+   66     | Expr . MINUS Expr
+   67     | Expr . STAR Expr
+   68     | Expr . DIV Expr
+   68     | Expr DIV Expr .
+   69     | Expr . MOD Expr
+   71     | Expr . LESS Expr
+   72     | Expr . MORE Expr
+   73     | Expr . LESSEQUAL Expr
+   74     | Expr . MOREEQUAL Expr
+   75     | Expr . EQUAL Expr
+   76     | Expr . NOTEQUAL Expr
+   77     | Expr . AND Expr
+   78     | Expr . OR Expr
+
+    DOT  shift, and go to state 126
+    LB   shift, and go to state 128
+
+    $default  reduce using rule 68 (Expr)
+
+
+State 155
+
+   43 LValue: Expr . DOT ID
+   44       | Expr . LB Expr RB
+   46 Call: Expr . DOT ID LP Actuals RP
+   65 Expr: Expr . PLUS Expr
+   66     | Expr . MINUS Expr
+   67     | Expr . STAR Expr
+   68     | Expr . DIV Expr
+   69     | Expr . MOD Expr
+   71     | Expr . LESS Expr
+   72     | Expr . MORE Expr
+   73     | Expr . LESSEQUAL Expr
+   74     | Expr . MOREEQUAL Expr
+   75     | Expr . EQUAL Expr
+   76     | Expr . NOTEQUAL Expr
+   77     | Expr . AND Expr
+   77     | Expr AND Expr .
+   78     | Expr . OR Expr
+
+    LESS       shift, and go to state 114
+    MORE       shift, and go to state 115
+    LESSEQUAL  shift, and go to state 116
+    MOREEQUAL  shift, and go to state 117
+    EQUAL      shift, and go to state 118
+    NOTEQUAL   shift, and go to state 119
+    PLUS       shift, and go to state 120
+    MINUS      shift, and go to state 121
+    STAR       shift, and go to state 122
+    DIV        shift, and go to state 123
+    DOT        shift, and go to state 126
+    MOD        shift, and go to state 127
+    LB         shift, and go to state 128
+
+    $default  reduce using rule 77 (Expr)
+
+
+State 156
+
+   43 LValue: Expr . DOT ID
+   44       | Expr . LB Expr RB
+   46 Call: Expr . DOT ID LP Actuals RP
+   65 Expr: Expr . PLUS Expr
+   66     | Expr . MINUS Expr
+   67     | Expr . STAR Expr
+   68     | Expr . DIV Expr
+   69     | Expr . MOD Expr
+   71     | Expr . LESS Expr
+   72     | Expr . MORE Expr
+   73     | Expr . LESSEQUAL Expr
+   74     | Expr . MOREEQUAL Expr
+   75     | Expr . EQUAL Expr
+   76     | Expr . NOTEQUAL Expr
+   77     | Expr . AND Expr
+   78     | Expr . OR Expr
+   78     | Expr OR Expr .
+
+    LESS       shift, and go to state 114
+    MORE       shift, and go to state 115
+    LESSEQUAL  shift, and go to state 116
+    MOREEQUAL  shift, and go to state 117
+    EQUAL      shift, and go to state 118
+    NOTEQUAL   shift, and go to state 119
+    PLUS       shift, and go to state 120
+    MINUS      shift, and go to state 121
+    STAR       shift, and go to state 122
+    DIV        shift, and go to state 123
+    AND        shift, and go to state 124
+    DOT        shift, and go to state 126
+    MOD        shift, and go to state 127
+    LB         shift, and go to state 128
+
+    $default  reduce using rule 78 (Expr)
+
+
+State 157
+
+   43 LValue: Expr DOT ID .
+   46 Call: Expr DOT ID . LP Actuals RP
+
+    LP  shift, and go to state 170
+
+    $default  reduce using rule 43 (LValue)
+
+
+State 158
+
+   43 LValue: Expr . DOT ID
+   44       | Expr . LB Expr RB
+   46 Call: Expr . DOT ID LP Actuals RP
+   65 Expr: Expr . PLUS Expr
+   66     | Expr . MINUS Expr
+   67     | Expr . STAR Expr
+   68     | Expr . DIV Expr
+   69     | Expr . MOD Expr
+   69     | Expr MOD Expr .
+   71     | Expr . LESS Expr
+   72     | Expr . MORE Expr
+   73     | Expr . LESSEQUAL Expr
+   74     | Expr . MOREEQUAL Expr
+   75     | Expr . EQUAL Expr
+   76     | Expr . NOTEQUAL Expr
+   77     | Expr . AND Expr
+   78     | Expr . OR Expr
+
+    DOT  shift, and go to state 126
+    LB   shift, and go to state 128
+
+    $default  reduce using rule 69 (Expr)
+
+
+State 159
+
+   43 LValue: Expr . DOT ID
+   44       | Expr . LB Expr RB
+   44       | Expr LB Expr . RB
+   46 Call: Expr . DOT ID LP Actuals RP
+   65 Expr: Expr . PLUS Expr
+   66     | Expr . MINUS Expr
+   67     | Expr . STAR Expr
+   68     | Expr . DIV Expr
+   69     | Expr . MOD Expr
+   71     | Expr . LESS Expr
+   72     | Expr . MORE Expr
+   73     | Expr . LESSEQUAL Expr
+   74     | Expr . MOREEQUAL Expr
+   75     | Expr . EQUAL Expr
+   76     | Expr . NOTEQUAL Expr
+   77     | Expr . AND Expr
+   78     | Expr . OR Expr
+
+    LESS       shift, and go to state 114
+    MORE       shift, and go to state 115
+    LESSEQUAL  shift, and go to state 116
+    MOREEQUAL  shift, and go to state 117
+    EQUAL      shift, and go to state 118
+    NOTEQUAL   shift, and go to state 119
+    PLUS       shift, and go to state 120
+    MINUS      shift, and go to state 121
+    STAR       shift, and go to state 122
+    DIV        shift, and go to state 123
+    AND        shift, and go to state 124
+    OR         shift, and go to state 125
+    DOT        shift, and go to state 126
+    MOD        shift, and go to state 127
+    LB         shift, and go to state 128
+    RB         shift, and go to state 171
+
+
+State 160
+
+   51 ForStmt: FOR LP SimpleStmt SEMI . BoolExpr SEMI SimpleStmt RP Stmt
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    LValue    go to state 93
+    Call      go to state 94
+    BoolExpr  go to state 172
+    Expr      go to state 135
+    Constant  go to state 88
+
+
+State 161
+
+   58 PrintStmt: PRINT LP ActualsList RP .
+
+    $default  reduce using rule 58 (PrintStmt)
+
+
+State 162
+
+   49 ActualsList: Expr COMMA . ActualsList
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    LValue       go to state 93
+    Call         go to state 94
+    ActualsList  go to state 173
+    Expr         go to state 131
+    Constant     go to state 88
+
+
+State 163
+
+   82 Expr: NEW ID LP RP .
+
+    $default  reduce using rule 82 (Expr)
+
+
+State 164
+
+   43 LValue: Expr . DOT ID
+   44       | Expr . LB Expr RB
+   46 Call: Expr . DOT ID LP Actuals RP
+   65 Expr: Expr . PLUS Expr
+   66     | Expr . MINUS Expr
+   67     | Expr . STAR Expr
+   68     | Expr . DIV Expr
+   69     | Expr . MOD Expr
+   71     | Expr . LESS Expr
+   72     | Expr . MORE Expr
+   73     | Expr . LESSEQUAL Expr
+   74     | Expr . MOREEQUAL Expr
+   75     | Expr . EQUAL Expr
+   76     | Expr . NOTEQUAL Expr
+   77     | Expr . AND Expr
+   78     | Expr . OR Expr
+   83     | NEW Type LB Expr . RB
+
+    LESS       shift, and go to state 114
+    MORE       shift, and go to state 115
+    LESSEQUAL  shift, and go to state 116
+    MOREEQUAL  shift, and go to state 117
+    EQUAL      shift, and go to state 118
+    NOTEQUAL   shift, and go to state 119
+    PLUS       shift, and go to state 120
+    MINUS      shift, and go to state 121
+    STAR       shift, and go to state 122
+    DIV        shift, and go to state 123
+    AND        shift, and go to state 124
+    OR         shift, and go to state 125
+    DOT        shift, and go to state 126
+    MOD        shift, and go to state 127
+    LB         shift, and go to state 128
+    RB         shift, and go to state 174
+
+
+State 165
+
+   53 IfStmt: IF LP BoolExpr RP . Stmt
+   54       | IF LP BoolExpr RP . Stmt ELSE Stmt
+
+    INT          shift, and go to state 11
+    FLOAT        shift, and go to state 12
+    BOOL         shift, and go to state 13
+    STRING       shift, and go to state 14
+    VOID         shift, and go to state 15
+    CLASS        shift, and go to state 16
+    FOR          shift, and go to state 55
+    BREAK        shift, and go to state 56
+    PRINT        shift, and go to state 57
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    RETURN       shift, and go to state 60
+    IF           shift, and go to state 61
+    WHILE        shift, and go to state 62
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+    LC           shift, and go to state 52
+
+    $default  reduce using rule 41 (SimpleStmt)
+
+    Variable    go to state 74
+    Type        go to state 28
+    StmtBlock   go to state 75
+    Stmt        go to state 175
+    SimpleStmt  go to state 78
+    LValue      go to state 79
+    Call        go to state 80
+    ForStmt     go to state 81
+    WhileStmt   go to state 82
+    IfStmt      go to state 83
+    ReturnStmt  go to state 84
+    BreakStmt   go to state 85
+    PrintStmt   go to state 86
+    Expr        go to state 87
+    Constant    go to state 88
+
+
+State 166
+
+   52 WhileStmt: WHILE LP BoolExpr RP . Stmt
+
+    INT          shift, and go to state 11
+    FLOAT        shift, and go to state 12
+    BOOL         shift, and go to state 13
+    STRING       shift, and go to state 14
+    VOID         shift, and go to state 15
+    CLASS        shift, and go to state 16
+    FOR          shift, and go to state 55
+    BREAK        shift, and go to state 56
+    PRINT        shift, and go to state 57
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    RETURN       shift, and go to state 60
+    IF           shift, and go to state 61
+    WHILE        shift, and go to state 62
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+    LC           shift, and go to state 52
+
+    $default  reduce using rule 41 (SimpleStmt)
+
+    Variable    go to state 74
+    Type        go to state 28
+    StmtBlock   go to state 75
+    Stmt        go to state 176
+    SimpleStmt  go to state 78
+    LValue      go to state 79
+    Call        go to state 80
+    ForStmt     go to state 81
+    WhileStmt   go to state 82
+    IfStmt      go to state 83
+    ReturnStmt  go to state 84
+    BreakStmt   go to state 85
+    PrintStmt   go to state 86
+    Expr        go to state 87
+    Constant    go to state 88
+
+
+State 167
+
+   84 Expr: INSTANCEOF LP Expr COMMA . ID RP
+
+    ID  shift, and go to state 177
+
+
+State 168
+
+   45 Call: ID LP Actuals RP .
+
+    $default  reduce using rule 45 (Call)
+
+
+State 169
+
+   85 Expr: LP CLASS ID RP . Expr
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    LValue    go to state 93
+    Call      go to state 94
+    Expr      go to state 178
+    Constant  go to state 88
+
+
+State 170
+
+   46 Call: Expr DOT ID LP . Actuals RP
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    $default  reduce using rule 48 (Actuals)
+
+    LValue       go to state 93
+    Call         go to state 94
+    Actuals      go to state 179
+    ActualsList  go to state 141
+    Expr         go to state 131
+    Constant     go to state 88
+
+
+State 171
+
+   44 LValue: Expr LB Expr RB .
+
+    $default  reduce using rule 44 (LValue)
+
+
+State 172
+
+   51 ForStmt: FOR LP SimpleStmt SEMI BoolExpr . SEMI SimpleStmt RP Stmt
+
+    SEMI  shift, and go to state 180
+
+
+State 173
+
+   49 ActualsList: Expr COMMA ActualsList .
+
+    $default  reduce using rule 49 (ActualsList)
+
+
+State 174
+
+   83 Expr: NEW Type LB Expr RB .
+
+    $default  reduce using rule 83 (Expr)
+
+
+State 175
+
+   53 IfStmt: IF LP BoolExpr RP Stmt .
+   54       | IF LP BoolExpr RP Stmt . ELSE Stmt
+
+    ELSE  shift, and go to state 181
+
+    $default  reduce using rule 53 (IfStmt)
+
+
+State 176
+
+   52 WhileStmt: WHILE LP BoolExpr RP Stmt .
+
+    $default  reduce using rule 52 (WhileStmt)
+
+
+State 177
+
+   84 Expr: INSTANCEOF LP Expr COMMA ID . RP
+
+    RP  shift, and go to state 182
+
+
+State 178
+
+   43 LValue: Expr . DOT ID
+   44       | Expr . LB Expr RB
+   46 Call: Expr . DOT ID LP Actuals RP
+   65 Expr: Expr . PLUS Expr
+   66     | Expr . MINUS Expr
+   67     | Expr . STAR Expr
+   68     | Expr . DIV Expr
+   69     | Expr . MOD Expr
+   71     | Expr . LESS Expr
+   72     | Expr . MORE Expr
+   73     | Expr . LESSEQUAL Expr
+   74     | Expr . MOREEQUAL Expr
+   75     | Expr . EQUAL Expr
+   76     | Expr . NOTEQUAL Expr
+   77     | Expr . AND Expr
+   78     | Expr . OR Expr
+   85     | LP CLASS ID RP Expr .
+
+    $default  reduce using rule 85 (Expr)
+
+
+State 179
+
+   46 Call: Expr DOT ID LP Actuals . RP
+
+    RP  shift, and go to state 183
+
+
+State 180
+
+   51 ForStmt: FOR LP SimpleStmt SEMI BoolExpr SEMI . SimpleStmt RP Stmt
+
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+
+    $default  reduce using rule 41 (SimpleStmt)
+
+    SimpleStmt  go to state 184
+    LValue      go to state 79
+    Call        go to state 80
+    Expr        go to state 87
+    Constant    go to state 88
+
+
+State 181
+
+   54 IfStmt: IF LP BoolExpr RP Stmt ELSE . Stmt
+
+    INT          shift, and go to state 11
+    FLOAT        shift, and go to state 12
+    BOOL         shift, and go to state 13
+    STRING       shift, and go to state 14
+    VOID         shift, and go to state 15
+    CLASS        shift, and go to state 16
+    FOR          shift, and go to state 55
+    BREAK        shift, and go to state 56
+    PRINT        shift, and go to state 57
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    RETURN       shift, and go to state 60
+    IF           shift, and go to state 61
+    WHILE        shift, and go to state 62
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+    LC           shift, and go to state 52
+
+    $default  reduce using rule 41 (SimpleStmt)
+
+    Variable    go to state 74
+    Type        go to state 28
+    StmtBlock   go to state 75
+    Stmt        go to state 185
+    SimpleStmt  go to state 78
+    LValue      go to state 79
+    Call        go to state 80
+    ForStmt     go to state 81
+    WhileStmt   go to state 82
+    IfStmt      go to state 83
+    ReturnStmt  go to state 84
+    BreakStmt   go to state 85
+    PrintStmt   go to state 86
+    Expr        go to state 87
+    Constant    go to state 88
+
+
+State 182
+
+   84 Expr: INSTANCEOF LP Expr COMMA ID RP .
+
+    $default  reduce using rule 84 (Expr)
+
+
+State 183
+
+   46 Call: Expr DOT ID LP Actuals RP .
+
+    $default  reduce using rule 46 (Call)
+
+
+State 184
+
+   51 ForStmt: FOR LP SimpleStmt SEMI BoolExpr SEMI SimpleStmt . RP Stmt
+
+    RP  shift, and go to state 186
+
+
+State 185
+
+   54 IfStmt: IF LP BoolExpr RP Stmt ELSE Stmt .
+
+    $default  reduce using rule 54 (IfStmt)
+
+
+State 186
+
+   51 ForStmt: FOR LP SimpleStmt SEMI BoolExpr SEMI SimpleStmt RP . Stmt
+
+    INT          shift, and go to state 11
+    FLOAT        shift, and go to state 12
+    BOOL         shift, and go to state 13
+    STRING       shift, and go to state 14
+    VOID         shift, and go to state 15
+    CLASS        shift, and go to state 16
+    FOR          shift, and go to state 55
+    BREAK        shift, and go to state 56
+    PRINT        shift, and go to state 57
+    THIS         shift, and go to state 58
+    NEW          shift, and go to state 59
+    RETURN       shift, and go to state 60
+    IF           shift, and go to state 61
+    WHILE        shift, and go to state 62
+    READINTEGER  shift, and go to state 63
+    READLINE     shift, and go to state 64
+    INSTANCEOF   shift, and go to state 65
+    ID           shift, and go to state 66
+    INTC         shift, and go to state 67
+    FLOATC       shift, and go to state 68
+    BOOLC        shift, and go to state 69
+    STRINGC      shift, and go to state 70
+    MINUS        shift, and go to state 71
+    NOT          shift, and go to state 72
+    LP           shift, and go to state 73
+    LC           shift, and go to state 52
+
+    $default  reduce using rule 41 (SimpleStmt)
+
+    Variable    go to state 74
+    Type        go to state 28
+    StmtBlock   go to state 75
+    Stmt        go to state 187
+    SimpleStmt  go to state 78
+    LValue      go to state 79
+    Call        go to state 80
+    ForStmt     go to state 81
+    WhileStmt   go to state 82
+    IfStmt      go to state 83
+    ReturnStmt  go to state 84
+    BreakStmt   go to state 85
+    PrintStmt   go to state 86
+    Expr        go to state 87
+    Constant    go to state 88
+
+
+State 187
+
+   51 ForStmt: FOR LP SimpleStmt SEMI BoolExpr SEMI SimpleStmt RP Stmt .
+
+    $default  reduce using rule 51 (ForStmt)

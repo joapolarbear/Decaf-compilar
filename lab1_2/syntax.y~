@@ -1,0 +1,153 @@
+%{
+	#include<stdio.h>
+	#include<stdlib.h>
+	#include<unistd.h>
+	#include "main.h"
+
+%}
+%union{
+	struct ast* a;
+	double d;
+}
+/* declared tokens */
+%token <a> INT FLOAT ID
+%token <a> SEMI COMMA 
+%token <a> ASSIGNOP RELOP
+%token <a> PLUS MINUS STAR DIV
+%token <a> AND OR
+%token <a> DOT NOT TYPE
+%token <a> LP RP LB RB LC RC
+%token <a> STRUCT RETURN IF ELSE WHILE CLASS EXTENDS FOR
+
+%type <a>  Program ExtDefList ExtDef Specifier ExtDecList FunDec CompSt VarDec StructSpecifier OptTag DefList Tag VarList ParamDec StmtList Stmt Exp Def Dec Args DecList Inherit ClassDefList SimpleStmt
+
+/*priority define*/
+%nonassoc LOWER_THAN_ELSE
+%nonassoc ELSE
+
+%right ASSIGNOP
+%left OR
+%left AND
+%left RELOP
+%left PLUS MINUS
+%left STAR DIV
+%right NOT
+%left LP RP LB RB LC RC DOT
+
+%%
+
+
+
+Program : ExtDefList 		{$$ = newast("Program", 1, $1);printf("print start:\n");eval($$, 0);printf("print  OK!!\n\n");}
+	;
+
+ExtDefList : 				{$$ = newast("ExtDefList", 0, -1);}
+	| ExtDef ExtDefList 	{$$ = newast("ExtDefList", 2, $1, $2);}
+	;
+ExtDef : Specifier ExtDecList SEMI 		{$$ = newast("ExtDef", 3, $1, $2, $3);}
+	| Specifier FunDec CompSt 			{$$ = newast("ExtDef", 3, $1, $2, $3);}
+	| CLASS ID Inherit LC ClassDefList RC	{$$ = newast("ExtDef", 6, $1, $2, $3, $4,$5, $6);}	
+	;
+ExtDecList : VarDec 			{$$ = newast("ExtDecList", 1, $1);}
+	| VarDec COMMA ExtDecList 	{$$ = newast("ExtDecList", 3, $1, $2, $3);}
+	;
+Inherit : EXTENDS ID   			{$$ = newast("Inherit", 2, $1, $2);}
+	|                       	{$$ = newast("Inherit", 0, -1);}
+	;
+/*Spefifire*/
+Specifier : TYPE 				{$$ = newast("Specifier", 1, $1);}
+	| StructSpecifier 			{$$ = newast("Specifier", 1, $1);}
+	;
+StructSpecifier : STRUCT OptTag LC DefList RC 		{$$ = newast("StructSpecifier", 5, $1, $2, $3, $4, $5);}
+	| STRUCT Tag 									{$$ = newast("StructSpecifier", 2, $1, $2);}
+	;
+OptTag : 	{$$ = newast("OptTag", 0, -1);}
+	| ID 	{$$ = newast("OptTag", 1, $1);}
+	;
+Tag : ID 	{$$ = newast("Tag", 1, $1);}
+	;
+
+/*Declaration*/
+VarDec : ID 			{$$ = newast("VarDec", 1, $1);}
+	| VarDec LB INT RB	{$$ = newast("VarDec", 4, $1, $2, $3, $4);}
+	;
+FunDec : error 			{printf("error type B at line %d:function declared error!!\n", yylineno);exit(0);}
+	| ID LP VarList RP 	{$$ = newast("FunDec", 4, $1, $2, $3, $4);}
+	| ID LP RP 				{$$ = newast("FunDec", 3, $1, $2, $3);}
+	;
+VarList : ParamDec COMMA VarList 	{$$ = newast("VarList", 3, $1, $2, $3);}
+	| ParamDec						{$$ = newast("VarList", 1, $1);}
+	;
+ParamDec : Specifier VarDec 		{$$ = newast("ParamDec", 2, $1, $2);}
+	;
+
+/*Statement*/
+CompSt : LC DefList StmtList RC 	{$$ = newast("CompSt", 4, $1, $2, $3, $4);}
+	;
+
+StmtList :  			{$$ = newast("StmtList", 0, -1);}
+	| Stmt StmtList		{$$ = newast("StmtList", 2, $1, $2);}
+	;
+Stmt : error SEMI 		{printf("error type B at line %d:illegle parse!!\n", yylineno);exit(0);}
+	| Exp SEMI     		{$$ = newast("Stmt", 2, $1, $2);}
+	| CompSt 			{$$ = newast("Stmt", 1, $1);}
+	| RETURN SEMI 			{$$ = newast("Stmt", 2, $1, $2);}
+	| RETURN Exp SEMI 	{$$ = newast("Stmt", 3, $1, $2, $3);}
+	| IF LP Exp RP Stmt 	%prec LOWER_THAN_ELSE {$$ = newast("Stmt", 5, $1, $2, $3, $4, $5);}
+	| IF LP Exp RP Stmt ELSE Stmt 	{$$ = newast("Stmt", 7, $1, $2, $3, $4, $5, $6, $7);}
+	| WHILE LP Exp RP Stmt 			{$$ = newast("Stmt", 5, $1, $2, $3, $4, $5);}	
+	| FOR LP SimpleStmt SEMI Exp SEMI SimpleStmt RP 	{$$ = newast("Stmt", 8, $1, $2, $3, $4, $5, $6, $7, $8);}
+	| BREAK SEMI					{$$ = newast("Stmt", 2, $1, $2);}
+	;
+SimpleStmt : VarDec ASSIGNOP Exp   	{$$ = newast("SimpleStmt", 3, $1, $2, $3);}
+	| 								{$$ = newast("SimpleStmt", 0, -1);}
+	;
+
+/*Location Definitions*/
+DefList : Def DefList 			{$$ = newast("DefList", 2, $1, $2);}	
+	| 							{$$ = newast("DefList", 0, -1);}	
+	;
+Def : Specifier DecList SEMI 	{$$ = newast("Def", 3, $1, $2, $3);}
+	;
+DecList : Dec  				{$$ = newast("DecList", 1, $1);}
+ 	| Dec COMMA DecList 	{$$ = newast("DecList", 3, $1, $2, $3);}
+ 	;
+Dec : error 				{printf("error type B at line %d:variable declared error!!\n", yylineno);exit(0);}
+	| VarDec    			{$$ = newast("Dec", 1, $1);}
+	| VarDec ASSIGNOP Exp 	{$$ = newast("Dec", 3, $1, $2, $3);}
+	;
+ClassDefList : Def DefList  	{$$ = newast("ClassDefList", 2, $1, $2);}
+	| Specifier FunDec CompSt 	{$$ = newast("ClassDefList", 3, $1, $2, $3);}
+	| 							{$$ = newast("ClassDefList", 0, -1);}
+	;
+
+
+Exp : Exp ASSIGNOP Exp 		{$$ = newast("Exp", 3, $1, $2, $3);}
+	| Exp AND Exp 			{$$ = newast("Exp", 3, $1, $2, $3);}
+	| Exp OR Exp  			{$$ = newast("Exp", 3, $1, $2, $3);}
+	| Exp RELOP Exp  		{$$ = newast("Exp", 3, $1, $2, $3);}
+	| Exp PLUS Exp 			{$$ = newast("Exp", 3, $1, $2, $3);}
+	| Exp MINUS Exp  		{$$ = newast("Exp", 3, $1, $2, $3);}
+	| Exp STAR Exp 			{$$ = newast("Exp", 3, $1, $2, $3);}
+	| Exp DIV Exp 			{$$ = newast("Exp", 3, $1, $2, $3);}
+	| LP Exp RP  			{$$ = newast("Exp", 3, $1, $2, $3);}
+	| MINUS Exp 			{$$ = newast("Exp", 2, $1, $2);}
+	| NOT Exp				{$$ = newast("Exp", 2, $1, $2);}
+	| ID LP Args RP 		{$$ = newast("Exp", 4, $1, $2, $3, $4);}
+	| ID LP RP  			{$$ = newast("Exp", 3, $1, $2, $3);}
+	| Exp LB Exp RB 		{$$ = newast("Exp", 4, $1, $2, $3, $4);}
+	| Exp DOT ID 			{$$ = newast("Exp", 3, $1, $2, $3);}
+	| ID 					{$$ = newast("Exp", 1, $1);}
+	| INT 					{$$ = newast("Exp", 1, $1);}
+	| FLOAT 				{$$ = newast("Exp", 1, $1);}
+	;
+Args : Exp COMMA Args  		{$$ = newast("Args", 3, $1, $2, $3);}
+	| Exp  					{$$ = newast("Args", 1, $1);}
+	;
+%%
+#include "lex.yy.c"
+/*
+int main(){
+	yyparse();
+}*/
+

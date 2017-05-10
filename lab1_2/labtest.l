@@ -1,0 +1,93 @@
+%{
+	#include<stdio.h>
+	// #include "syntax.tab.h"
+	int chars = 0;
+	int words = 0;
+	int lines = 0;
+%}
+%option yylineno
+letter [a-zA-Z]
+hex		0[xX][0-9A-Fa-f]{1,8}
+
+INT 	{hex}|(0[1-7][0-7]{0,9})|([1-9][0-9]*)|0
+FLOAT   ([0-9]+\.[0-9]+)|([0-9]*\.[0-9]*[Ee][+-]?[0-9]{1,2})
+STRING  \".*\"
+ID      [a-zA-Z_][0-9A-Za-z_]*	
+
+SEMI	;
+COMMA	,
+ASSIGNOP	=
+RELOP	>|<|>=|<=|==|!=
+PLUS	\+
+MINUS	-
+STAR	\*
+DIV		\/
+AND		&&
+OR		\|\|
+DOT		\.
+NOT 	!
+TYPE	int|float
+LP		\(
+RP 		\)
+LB 		\[
+RB 		\]
+LC		\{
+RC 		\}
+STRUCT 	struct 
+RETURN 	return
+IF 		if
+ELSE 	else
+WHILE 	whlie
+SPACE 	[ \t\r]*
+EOL 	\n
+COMMENT 		\/\/.*$
+
+%%
+{TYPE}		{printf("TYPE %s\n", yytext);}
+{STRUCT} 	{printf("STRUCT %s\n", yytext);}
+{RETURN}	{printf("RETURN %s\n", yytext);}
+{IF}		{printf("IF %s\n", yytext);}
+{ELSE}		{printf("ELSE %s\n", yytext);}
+{WHILE}		{printf("WHILE %s\n", yytext);}
+{INT}	{printf("INT %s\n", yytext);}
+{FLOAT} {printf("FLOAT %s\n", yytext);}
+{STRING} {printf("STRING %s\n", yytext);}
+{ID}	{printf("ID %s\n", yytext);}
+
+{COMMENT} {printf("COMMENT %s\n", yytext);}
+{SEMI} 	{printf("SEMI %s\n", yytext);}
+{COMMA} {printf("COMMA %s\n", yytext);}
+{ASSIGNOP}	{printf("ASSIGNOP %s\n", yytext);}
+{RELOP}		{printf("RELOP %s\n", yytext);}
+{PLUS}		{printf("PLUS %s\n", yytext);}
+{MINUS}		{printf("MINUS %s\n", yytext);}
+{STAR}		{printf("STAR %s\n", yytext);}
+{DIV} 		{printf("DIV %s\n", yytext);}
+{AND}		{printf("AND %s\n", yytext);}	
+{OR}		{printf("OR %s\n", yytext);}
+{DOT}		{printf("DOT %s\n", yytext);}
+{NOT}		{printf("NOT %s\n", yytext);}
+
+{LP}		{printf("LP %s\n", yytext);}
+{RP}		{printf("RP %s\n", yytext);}
+{LB}		{printf("LB %s\n", yytext);}
+{RB}		{printf("RB %s\n", yytext);}
+{LC}		{printf("LC %s\n", yytext);}
+{RC} 		{printf("RC %s\n", yytext);}
+{SPACE}		{}
+{EOL} 		{}
+.			{ chars++; printf("Error type A an Line %d: Mysterious characters \'%s\'\n", yylineno, yytext); }
+%%
+int main(int argc, char ** argv)
+{
+	if(argc > 1)
+	{
+		if(!(yyin = fopen(argv[1], "r")))
+		{	perror(argv[1]);
+			return 1;
+		}
+	}
+	yylex();
+	printf("%8d%8d%8d\n", lines, words, chars);
+	return 0;
+}
